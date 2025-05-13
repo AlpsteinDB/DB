@@ -43,59 +43,5 @@ const gipfel = [{'Gipfel': 'Achter Kreuzberg', 'Latitude': 47.23683049, 'Longitu
     <p>&copy; Andreas Koller, 2025 – <a href="mailto:andreas-koller@gmx.ch">andreas-koller@gmx.ch</a></p>
   </footer>
 
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-  
-  <script>
-function formatNumberCH(num) {
-  return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "'");
-}
-
-    const map = L.map('map').setView([47.27, 9.4], 12);
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      maxZoom: 18,
-      attribution: '&copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a>'
-    }).addTo(map);
-
-    const markerLayer = L.layerGroup().addTo(map);
-    
-
-    function updateMap(fromYear, toYear) {
-      fetch(`https://alpsteindb.onrender.com/api/eintraege-pro-gipfel?von=${fromYear}&bis=${toYear}`)
-        .then(res => res.json())
-        .then(data => {
-          markerLayer.clearLayers();
-          gipfel.forEach(p => {
-            const count = data[p.Gipfel] || 0;
-            const radius = count > 0 ? 3 + Math.log10(count) * 8.26 : 4;
-            const color = count > 0 ? "green" : "gray";
-            const marker = L.circleMarker([p.Latitude, p.Longitude], {
-              radius,
-              color,
-              fillColor: color,
-              fillOpacity: 0.7,
-              weight: 1
-            }).bindPopup(`${p.Gipfel} – ${count} Eintrag${count !== 1 ? 'e' : ''}`);
-            markerLayer.addLayer(marker);
-          });
-
-          const totalEntries = Object.values(data).reduce((sum, val) => sum + val, 0);
-          const countedPeaks = Object.values(data).filter(v => v > 0).length;
-          document.getElementById("entryCount").textContent = formatNumberCH(totalEntries);
-          document.getElementById("peakCount").textContent = formatNumberCH(countedPeaks);
-
-        })
-        .catch(err => {
-          console.error("Fehler beim Laden der Daten:", err);
-        });
-    }
-
-    updateMap(1990, 2025);
-    document.getElementById('fromYear').addEventListener('change', () => {
-      updateMap(fromYear.value, toYear.value);
-    });
-    document.getElementById('toYear').addEventListener('change', () => {
-      updateMap(fromYear.value, toYear.value);
-    });
-  </script>
 </body>
 </html>
