@@ -75,8 +75,9 @@
     <table id="buechertabelle">
       <thead>
         <tr>
-          <th>Gipfel</th>
-		  <th>Buchtyp</th>
+          <th>ID</th>
+	  <th>Gipfel</th>
+	  <th>Buchtyp</th>
           <th>Erster Eintrag</th>
           <th>Letzter Eintrag</th>
           <th>Seiten / Zustand</th>
@@ -117,8 +118,9 @@
         }
 
         tr.innerHTML = `
-          <td>${buch["Gipfel"] || ""}</td>
-		  <td>${buch["Buchtyp"] || ""}</td>
+          <td>${buch["ID"] || ""}</td>
+	  <td>${buch["Gipfel"] || ""}</td>
+	  <td>${buch["Buchtyp"] || ""}</td>
           <td>${buch["Erster Eintrag"] || ""}</td>
           <td>${buch["Letzter Eintrag"] || ""}</td>
           <td>${buch["Seiten / Zustand"] || ""}</td>
